@@ -1,7 +1,9 @@
 import sensor
 import check
 import utime
+import record
 from variables import *
+from check import last_row
 from lcd_i2c import LCD
 from machine import I2C
 
@@ -24,8 +26,25 @@ for i in range(82):
     # comprobacion de duplicados
     status = check.data(time,temp,hum)
     print(status)
-
+    
+    response = None
+        
     if  status:
+    
+        last_data = last_row()
+        print(last_data)
+        json_data = record.to_json(last_data)
+        print(json_data)
+        response = record.sent_json(json_data)
+        
+        if response is not None:
+            lcd.set_cursor(0, 3)
+            lcd.print("Enviado con exito")
+            
+        else:
+            lcd.set_cursor(0, 3)
+            lcd.print("Error de envio")
+        
         utime.sleep(10)
         lcd.clear()
         lcd.set_cursor(0, 0)
@@ -35,7 +54,8 @@ for i in range(82):
     else:
         lcd.set_cursor(0, 0)
         lcd.print(f"status: {status}".format(status))
-                 
+    
+
         
 lcd.set_cursor(0, 3)
 lcd.print("Fin del programa")

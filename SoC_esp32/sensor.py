@@ -41,8 +41,8 @@ def write_csv(time:int, temp:int, hum:int):
             if mode == 'w':
                 write_row(["time", "temperature", "humidity"])
             write_row([time, temp, hum])
-            lcd.set_cursor(0,3)
+            lcd.set_cursor(0,2)
             lcd.print("Escritura correcta")
     except OSError as e:
-        lcd.set_cursor(0,3)
+        lcd.set_cursor(0,2)
         lcd.print("Error de escritura")
