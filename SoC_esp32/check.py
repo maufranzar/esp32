@@ -8,7 +8,7 @@ def init_csv():
     else:
         with open(RECORD_PATH, "w") as f:
             csv_writer = writer(f)
-            csv_writer(["time", "temperature", "humidity"])
+            csv_writer(["time", "temperature", "humidity", "light"])
         return "w"
     
     
@@ -20,9 +20,9 @@ def last_row():
     return last_line
     
 
-def data(time:int, temp:int, hum:int):
+def data(time:int, temp:int, hum:int, light:float):
     last_line = last_row()
     if last_line is not None:
-        if last_line == [str(time), str(temp), str(hum)]:
+        if last_line == [str(time), str(temp), str(hum), str(light)]:
             return True
     return False

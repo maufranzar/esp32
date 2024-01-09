@@ -4,7 +4,7 @@
 import network, webrepl, os, sdcard, utime, dht, ntptime
 from variables import *
 from lcd_i2c import LCD
-from machine import I2C, Pin, SoftSPI
+from machine import I2C,SoftSPI,SoftI2C
 
 
 # WIFI Init
@@ -24,9 +24,13 @@ sd = sdcard.SDCard(spi, CS_SD)
 fs = os.VfsFat(sd)
 os.mount(fs, '/sd')
 
-# Sensors Init
+# Sensors Init:
+
+# DHT11
 dht11 = dht.DHT11(DHT11_PIN)
 
+# BH1750
+i2c_bh1750 = SoftI2C(scl=SCL_BH1750, sda=SDA_BH1750,freq=400000)
 
 
 while station.isconnected() == False:

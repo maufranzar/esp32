@@ -17,6 +17,11 @@ CS_SD = Pin(27)
 # DHT11
 DHT11_PIN = Pin(15)
 
+# BH1750
+BH1750_ADDR = 0x23
+SDA_BH1750 = Pin(16)
+SCL_BH1750 = Pin(4)
+
 
 # RECORD
 RECORD_NAME = 'record.csv'

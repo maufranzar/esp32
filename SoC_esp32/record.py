@@ -20,7 +20,8 @@ def to_json(data):
     json_data = ujson.dumps({
         "time": data[0],
         "temperature": data[1],
-        "humidity": data[2]
+        "humidity": data[2],
+        "light": data[3]
     })
     return json_data
 
