@@ -32,7 +32,6 @@ dht11 = dht.DHT11(DHT11_PIN)
 # BH1750
 i2c_bh1750 = SoftI2C(scl=SCL_BH1750, sda=SDA_BH1750,freq=400000)
 
-
 while station.isconnected() == False:
     lcd.set_cursor(0, 0)
     lcd.print("Conectando...")

@@ -12,19 +12,20 @@ lcd = LCD(addr=I2C_ADDR, cols=NUM_COLS, rows=NUM_ROWS, i2c=i2c)
 lcd.begin()
 
 
+
 lcd.set_cursor(0, 0)
 lcd.print("Iniciando...")
     
 
 for i in range(82):
     # lectura de datos
-    time, temp, hum = sensor.read_sensor()
+    time, temp, hum, light = sensor.read_sensor()
     
     # escritura en el sd
-    sensor.write_csv(time,temp,hum)
+    sensor.write_csv(time,temp,hum,light)
     
     # comprobacion de duplicados
-    status = check.data(time,temp,hum)
+    status = check.data(time,temp,hum,light)
     print(status)
     
     response = None
