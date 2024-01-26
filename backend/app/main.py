@@ -7,6 +7,7 @@ class SensorData(BaseModel):
     temperature: int
     humidity: int
     light: float
+    distance: float
 
 app = FastAPI()
 

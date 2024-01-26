@@ -1,7 +1,7 @@
 # This file is executed on every boot (including wake-boot from deepsleep)
 # import esp
 # esp.osdebug(None)
-import network, webrepl, os, sdcard, utime, dht, ntptime
+import network, webrepl, os, sdcard, utime, dht, ntptime, neopixel
 from variables import *
 from lcd_i2c import LCD
 from machine import I2C,SoftSPI,SoftI2C
@@ -23,6 +23,13 @@ spi = SoftSPI(1, sck=SCK_SD, mosi=MOSI_SD, miso=MISO_SD)
 sd = sdcard.SDCard(spi, CS_SD)
 fs = os.VfsFat(sd)
 os.mount(fs, '/sd')
+
+# Neopixel Init
+pixel = neopixel.NeoPixel(LED_PIN,3)
+
+# Rele Init
+RELE_A.value(1)
+RELE_B.value(1)
 
 # Sensors Init:
 

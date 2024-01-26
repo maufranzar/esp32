@@ -2,7 +2,7 @@ db.createCollection("sensor", {
     validator: {
        $jsonSchema: {
           bsonType: "object",
-          required: [ "time", "temperature", "humidity", "lux" ],
+          required: [ "time","temperature","humidity","lux","distance" ],
           properties: {
              time: {
                 bsonType: "int",
@@ -19,7 +19,12 @@ db.createCollection("sensor", {
              lux: {
                bsonType: "float",
                description: "float lux: required"
-            }
+             },
+             distance: {
+               bsonType: "float",
+               description: "float cm: required"
+             }
+            
           }
        }
     }

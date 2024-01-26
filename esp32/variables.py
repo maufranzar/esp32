@@ -22,8 +22,18 @@ BH1750_ADDR = 0x23
 SDA_BH1750 = Pin(16)
 SCL_BH1750 = Pin(4)
 
+# WS2812
+LED_PIN = Pin(17,Pin.OUT)
 
-# RECORD
+# HCSR04
+TRIGGER_PIN = Pin(18, Pin.OUT)
+ECHO_PIN = Pin(19, Pin.IN)
+
+# RELE
+RELE_A = Pin(25,Pin.OUT)
+RELE_B = Pin(26,Pin.OUT)
+
+# SD RECORD
 RECORD_NAME = 'record.csv'
 RECORD_PATH = '/sd/record.csv'
 

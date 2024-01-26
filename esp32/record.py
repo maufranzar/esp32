@@ -1,6 +1,6 @@
 import urequests
 import ujson
-from variables import RECORD_PATH
+
 
 def writer(file):
     def write_row(row):
@@ -10,10 +10,8 @@ def writer(file):
 
 
 def reader(file):
-    def read_rows():
-        lines = file.readlines()
-        return [line.strip().split(',') for line in lines]
-    return read_rows
+    lines = file.readlines()
+    return [line.strip().split(',') for line in lines]
 
 
 def to_json(data):
@@ -21,7 +19,8 @@ def to_json(data):
         "time": data[0],
         "temperature": data[1],
         "humidity": data[2],
-        "light": data[3]
+        "light": data[3],
+        "distance": data[4]
     })
     return json_data
 
