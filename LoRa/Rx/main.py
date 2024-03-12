@@ -25,11 +25,11 @@ def get_async_modem():
     from lora import AsyncSX1276
     return AsyncSX1276(
         spi=SPI(1, baudrate=200_000, polarity=0, phase=0,
-                miso=Pin(7), mosi=Pin(8), sck=Pin(6)),
-        cs=Pin(10),
-        dio0=Pin(2),
-        dio1=Pin(4),
-        reset=Pin(0),
+                miso=Pin(19), mosi=Pin(23), sck=Pin(18)),
+        cs=Pin(5),
+        dio0=Pin(26),
+        dio1=Pin(27),
+        reset=Pin(14),
         lora_cfg=lora_cfg,
     )
 

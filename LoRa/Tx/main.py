@@ -64,14 +64,7 @@ async def get_sensor_data():
     # In a real application the sensor data should usually be binary data and
     # not a string, to save transmission size.
     
-    uart = UART(1, baudrate=9600, tx=Pin(4), rx=Pin(2))
-    data_uart = b"No Data Received by UART"
-    
-    while not uart.any():
-        await asyncio.sleep(0.1)
-    data_uart = uart.read()
-    
-    return data_uart
+    return time.ticks_ms().to_bytes(4, "little")
 
 
 async def sender_task(modem):
