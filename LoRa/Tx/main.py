@@ -1,9 +1,9 @@
-# ESP32-D0WD-V3
+# Tx
 
 # MicroPython lora reliable_delivery example - asynchronous sender program
 # MIT license; Copyright (c) 2023 Angus Gratton
 import machine
-from machine import SPI, Pin, UART
+from machine import SPI, Pin
 import random
 import struct
 import time
@@ -64,7 +64,7 @@ async def get_sensor_data():
     # In a real application the sensor data should usually be binary data and
     # not a string, to save transmission size.
     
-    return time.ticks_ms().to_bytes(4, "little")
+    return f"ticks_ms={time.ticks_ms()}".encode()
 
 
 async def sender_task(modem):
