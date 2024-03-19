@@ -20,7 +20,6 @@ lcd = LCD(addr=I2C_ADDR,cols=COLS_LCD,rows=ROWS_LCD,i2c=i2c)
 lcd.begin()
 
 # SDCard Init
-# SDCard Init
 spi = SoftSPI(1,mosi=MOSI_SD,miso=MISO_SD,sck=SCK_SD)
 sd = sdcard.SDCard(spi,CS_SD)
 fs = os.VfsFat(sd)
