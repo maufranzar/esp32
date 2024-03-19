@@ -26,7 +26,6 @@ fs = os.VfsFat(sd)
 os.mount(fs, '/sd')
 
 
-
 while station.isconnected() == False:
     lcd.set_cursor(0, 0)
     lcd.print("Conectando...")
