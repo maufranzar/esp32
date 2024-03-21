@@ -1,42 +1,71 @@
-import os, network, utime, sdcard
+###
 
-from constants import *
-from machine import I2C, SoftSPI, ADC
-from lcd_i2c import LCD
+# Umbral de voltaje para detectar ruido
+threshold = 1900    # mV
 
+# Variables globales
+start_time = 0
+group_id = 0
 
-# WIFI Init
-station = network.WLAN(network.STA_IF)
-station.active(True)
-station.connect(SSID,PASS)
+sample_rate = 44100  # Frecuencia de Muestreo
+sample_period_ms = 1 / sample_rate  # periodo de muestreo
+recording_duration = 5000 # milisegundos
+total_samples = 0
+total_voltage = 0
 
-# LCD Init
-i2c = I2C(0,scl=SCL_LCD,sda=SDA_LCD,freq=FREQ_LCD)
-lcd = LCD(addr=I2C_ADDR,cols=COLS_LCD,rows=ROWS_LCD,i2c=i2c)
-lcd.begin()
-lcd.clear()
+def start_recording():
+    global start_time, group_id, total_samples, total_voltage
+    start_time = utime.ticks_ms()
+    group_id += 1
+    total_samples = 0
+    total_voltage = 0
+    lcd.clear()
+    lcd.set_cursor(0, 0)
+    lcd.print("Grabando: Grupo {}".format(group_id))
+    print("Recording started")  # Checkpoint
 
-# SDCard Init
-spi = SoftSPI(1,mosi=MOSI_SD,miso=MISO_SD,sck=SCK_SD)
-sd = sdcard.SDCard(spi,CS_SD)
+def stop_recording():
+    global group_id, total_samples, start_time
+    filename = "/sd/noise-{}-{}-{}.csv".format(utime.localtime()[3], utime.localtime()[4], utime.ticks_diff(utime.ticks_ms(), start_time) / 1000)
+    group_id += 1
+    print("Recording stopped")  # Checkpoint
+    actual_sample_rate = total_samples / (utime.ticks_diff(utime.ticks_ms(), start_time) / 1000)
+    lcd.set_cursor(0, 1)
+    lcd.print("Sample Rate:{:.2f}Hz".format(actual_sample_rate))
 
-# ADC Init
-adc = ADC(MIC_PIN)
-adc.atten(ADC.ATTN_6DB)
-adc.width(ADC.WIDTH_12BIT)
-adc.init()
+def record_sample():
+    global total_samples, total_voltage
+    voltage = adc.read_uv() / 1000
+    time_ms = utime.ticks_diff(utime.ticks_ms(), start_time) / 1000
+    total_samples += 1
+    total_voltage += voltage
+    avg_voltage = total_voltage / total_samples
+    lcd.set_cursor(0, 2)
+    lcd.print("Avg Voltage:{:.2f} mV".format(avg_voltage))
+    with open(filename, 'a') as f:
+        f.write(','.join(str(x) for x in [time_ms, voltage, group_id]) + '\n')
+    if total_samples >= recording_duration * sample_rate:
+        stop_recording()
 
-def measure():
-    return adc.read_uv()
-
-def main():
-    while True:
-        lcd.set_cursor(0,0)
-        lcd.print("Sound lvl in mV")
-        lcd.set_cursor(0,1)
-        lcd.print("Attenuation: 6dB")
-        lcd.set_cursor(6,3)
-        lcd.print(str(1650-(measure()/1000)))
-        utime.sleep(0.12)
-
-main()
+# Bucle principal
+start_noise_time = None
+while True:
+    voltage = adc.read_uv() / 1000
+    if voltage > threshold:
+        if start_noise_time is None:
+            start_noise_time = utime.ticks_ms()
+        elif utime.ticks_diff(utime.ticks_ms(), start_noise_time) >= 1000:  # 1 segundo
+            filename = "/sd/noise-{}-{}-{}.csv".format(utime.localtime()[3], utime.localtime()[4], group_id)
+            try:
+                os.stat(filename)
+            except OSError:
+                start_recording()
+            start_record_time = utime.ticks_ms()
+            while utime.ticks_diff(utime.ticks_ms(), start_record_time) < recording_duration:
+                record_sample()
+                utime.sleep_us(round(sample_period_ms))  # Espera para lograr frecuencia de muestreo
+            stop_recording()
+            start_noise_time = None  # Reset the start noise time
+    else:
+        start_noise_time = None  # Reset the start noise time
+        utime.sleep_ms(10)

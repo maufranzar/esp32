@@ -1,0 +1,59 @@
+{
+    "[python]": {
+        "editor.formatOnType": true
+    },
+    "workbench.startupEditor": "none",
+    "workbench.iconTheme": "material-icon-theme",
+    "window.menuBarVisibility": "toggle",
+    "explorer.confirmDelete": false,
+    "explorer.confirmDragAndDrop": false,
+    "jupyter.askForKernelRestart": false,
+    "notebook.consolidatedRunButton": true,
+    "editor.accessibilityPageSize": 13,
+    "terminal.integrated.fontSize": 13,
+    "workbench.settings.applyToAllProfiles": [
+        "editor.fontSize"
+    ],
+    "editor.fontSize": 13,
+    "oneDarkPro.bold": true,
+    "editor.cursorBlinking": "phase",
+    "editor.linkedEditing": true,
+    "editor.bracketPairColorization.independentColorPoolPerBracketType": true,
+    "editor.guides.bracketPairs": true,
+    "breadcrumbs.enabled": false,
+    "editor.cursorSmoothCaretAnimation": "on",
+    "editor.minimap.enabled": false,
+    "editor.fontLigatures": true,
+    "oneDarkPro.vivid": true,
+    "editor.fontFamily": "'Cascadia Code PL', 'monospace', monospace",
+    "window.zoomLevel": 1,
+    "code-runner.runInTerminal": true,
+    "git.autofetch": true,
+    "errorLens.gutterIconSet": "emoji",
+    "errorLens.delay": 500,
+    "errorLens.editorHoverPartsEnabled": {
+        "messageEnabled": true,
+        "sourceCodeEnabled": true,
+        "buttonsEnabled": true
+    },
+    "errorLens.excludeBySource": [
+        "Pylance(reportMissingImports)",
+        "Pylance(reportUndefinedVariable)"
+    ],
+
+    "workbench.sideBar.location": "right",
+    "errorLens.gutterIconsEnabled": true,
+    "errorLens.onSaveTimeout": 1000,
+    "errorLens.problemRangeDecorationEnabled": true,
+    "workbench.colorTheme": "Night Owl",
+    "idf.espIdfPath": "/home/maufranzar/esp/esp-idf",
+    "idf.pythonBinPath": "/home/maufranzar/.espressif/python_env/idf5.3_py3.11_env/bin/python",
+    "idf.toolsPath": "/home/maufranzar/.espressif",
+    "idf.customExtraPaths": "/home/maufranzar/.espressif/tools/xtensa-esp-elf-gdb/12.1_20231023/xtensa-esp-elf-gdb/bin:/home/maufranzar/.espressif/tools/riscv32-esp-elf-gdb/12.1_20231023/riscv32-esp-elf-gdb/bin:/home/maufranzar/.espressif/tools/xtensa-esp-elf/esp-13.2.0_20230928/xtensa-esp-elf/bin:/home/maufranzar/.espressif/tools/riscv32-esp-elf/esp-13.2.0_20230928/riscv32-esp-elf/bin:/home/maufranzar/.espressif/tools/esp32ulp-elf/2.35_20220830/esp32ulp-elf/bin:/home/maufranzar/.espressif/tools/openocd-esp32/v0.12.0-esp32-20230921/openocd-esp32/bin:/home/maufranzar/.espressif/tools/esp-rom-elfs/20240305",
+    "idf.customExtraVars": {
+        "OPENOCD_SCRIPTS": "/home/maufranzar/.espressif/tools/openocd-esp32/v0.12.0-esp32-20230921/openocd-esp32/share/openocd/scripts",
+        "ESP_ROM_ELF_DIR": "/home/maufranzar/.espressif/tools/esp-rom-elfs/20240305/"
+    },
+    "idf.gitPath": "git",
+    "terminal.integrated.enableMultiLinePasteWarning": false,
+}
