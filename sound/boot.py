@@ -24,6 +24,11 @@ spi = SoftSPI(1,mosi=MOSI_SD,miso=MISO_SD,sck=SCK_SD)
 sd = sdcard.SDCard(spi,CS_SD)
 fs = os.VfsFat(sd)
 os.mount(fs, '/sd')
+try:
+    os.stat("/sd/measure")
+except OSError:
+    os.mkdir("/sd/measure")
+
 print("SDCard initialized")  # Checkpoint
 lcd.set_cursor(0, 1)
 lcd.print("SDCard         OK")
