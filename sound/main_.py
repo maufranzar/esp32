@@ -1,52 +1,44 @@
+# main.py
 
-sample_freq = 16000
-sample_interval = 1 / sample_freq
-umbral = 100
-tiempo = []
-voltaje = []
-grupo = 0
+import utime
+import array
 
-def escucha():
-    global sample_freq, umbral, grupo, tiempo, voltaje
-    start_time = time.ticks_ms()
-    while True:
-        lectura = adc.read_uv() /1000 # mV
-        if lectura > umbral:
-            if time.ticks_diff(time.ticks_ms(), start_time) >= 1500:
-                start_recording()
-                break
-        time.sleep_ms(sample_interval)
+# Variables globales
+BUFFER_SIZE = 512  # Tamaño del buffer igual al tamaño del bloque de la SD
+voltages = []
+times = []
 
-def start_recording():
-    global sample_freq, umbral, grupo, tiempo, voltaje
-    sample_freq = 44100
-    sample_interval = 1 / sample_freq
-    start_time = time.ticks_ms()
-    while time.ticks_diff(time.ticks_ms(), start_time) < 5000:
-        lectura = adc.read() * 3.3 / 4095 * 1000000
-        tiempo.append(time.ticks_diff(time.ticks_ms(), start_time))
-        voltaje.append(lectura)
-        time.sleep_ms(sample_interval)
-    stop_recording()
-
-def stop_recording():
-    global grupo
-    save_sd()
-    grupo += 1
-    tiempo = []
-    voltaje = []
+def sample():
+    start_time = utime.ticks_us()
+    voltage = adc.read_uv() // 1000  # Convertir a milivoltios
+    time = utime.ticks_diff(utime.ticks_us(), start_time)
+    return voltage, time  # mV , us
 
 def save_sd():
-    global grupo, tiempo, voltaje
-    try:
-        with open('/sd/ruido_grupo_{}.csv'.format(grupo), 'w', newline='') as csvfile:
-            writer = csv.writer(csvfile)
-            writer.writerow(['Tiempo', 'Voltaje', 'Grupo'])
-            for i in range(len(tiempo)):
-                writer.writerow([tiempo[i], voltaje[i], grupo])
-    except OSError:
-        print('Error al montar la tarjeta SD.')
+    global voltages, times
+    buf_v = array.array("H", voltages)  # Convertir los datos a array de enteros de 16 bits
+    buf_t = array.array("H", times)  # Convertir los datos a array de enteros de 16 bits
+    sd.writeblocks(0, buf_v)  # Escribir los datos de voltaje en la SD
+    sd.writeblocks(len(buf_v) * 512, buf_t)  # Escribir los datos de tiempo en la SD después de los datos de voltaje
+    voltages = []
+    times = []
 
-# Bucle infinito
+
+def loop():
+    global voltages, times
+    count = 0
+    start_time = utime.ticks_ms()
+    while utime.ticks_diff(utime.ticks_ms(), start_time) < 1000:
+        voltage, time = sample()
+        voltages.append(voltage)
+        times.append(time)
+        count += 1
+        if len(voltages) >= BUFFER_SIZE:
+            save_sd()
+            voltages = []
+            times = []
+    print("Frecuencia de muestreo: {} Hz".format(count))
+
+# Llamada al bucle principal
 while True:
-    escucha()
+    loop()

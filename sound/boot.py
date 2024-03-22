@@ -5,7 +5,7 @@
 import os, network, utime, ntptime, sdcard, webrepl
 
 from constants import *
-from machine import I2C, SoftSPI, ADC
+from machine import I2C, SPI, ADC
 from lcd_i2c import LCD
 
 
@@ -19,14 +19,16 @@ lcd.set_cursor(0, 0)
 lcd.print("LCD            OK")
 
 
-# SDCard Init
-spi = SoftSPI(1,mosi=MOSI_SD,miso=MISO_SD,sck=SCK_SD)
+# SDCard Init (v2)
+spi = SPI(1,mosi=MOSI_SD,miso=MISO_SD,sck=SCK_SD)
 sd = sdcard.SDCard(spi,CS_SD)
-fs = os.VfsFat(sd)
-os.mount(fs, '/sd')
+spi.init()
 try:
+    fs = os.VfsFat(sd)
+    os.mount(fs, '/sd')
     os.stat("/sd/measure")
 except OSError:
+    lcd.print("Error al montar SD")
     os.mkdir("/sd/measure")
 
 print("SDCard initialized")  # Checkpoint
