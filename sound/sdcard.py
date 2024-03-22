@@ -207,7 +207,7 @@ class SDCard:
 
         self.cs(1)
         self.spi.write(b"\xff")
-
+        
     def write_token(self, token):
         self.cs(0)
         self.spi.read(1, token)
