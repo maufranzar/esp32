@@ -2,7 +2,7 @@
 #import esp
 #esp.osdebug(None)
 
-import os, network, utime, sdcard, webrepl
+import machine,os,network,utime,sdcard,webrepl,struct
 
 from constants import *
 from machine import I2C, SPI, ADC
@@ -23,9 +23,9 @@ utime.sleep_ms(1000)
 # SDCard Init (v2)
 spi = SPI(1,mosi=MOSI_SD,miso=MISO_SD,sck=SCK_SD)
 sd = sdcard.SDCard(spi,CS_SD)
-spi.init()
-fs = os.VfsFat(sd)
-os.mount(fs, '/sd')
+spi.init(baudrate=20_000_000)
+# fs = os.VfsFat(sd)
+
 print("SDCard initialized")  # Checkpoint
 lcd.set_cursor(0, 1)
 lcd.print("SDCard         OK")
@@ -56,6 +56,7 @@ while station.isconnected() == False:
     lcd.clear()
     lcd.set_cursor(0, 2)
     lcd.print("Linking...")
+    utime.sleep_ms(100)
     
 else:
     ip_address = station.ifconfig()[0]
@@ -66,24 +67,8 @@ else:
     lcd.print(ip_address+":8266")
     webrepl.start()
 
-if 'sd' in os.listdir():
     
-    lcd.set_cursor(0, 2)
-    sd_stat = os.statvfs('/sd')
-    lcd.print("SD Card: OK!")
-    utime.sleep_ms(1000)
-    free_space = sd_stat[0]*sd_stat[3]
-    lcd.set_cursor(0, 3)
-    lcd.print("SD Free:{}MB".format(free_space/1024/1024))
-    utime.sleep_ms(1000)            
-else:
-        lcd.set_cursor(0, 2)
-        lcd.print("SD Card: Fail!")
-        lcd.set_cursor(0, 3)
-        lcd.print("Inserte una SD Card!")
-
-    
-for i in range(4,-1,-1):
+for i in range(9,-1,-1):
     lcd.set_cursor(0, 2)
     lcd.print("Iniciando en {}s".format(i))
     utime.sleep_ms(1000)
