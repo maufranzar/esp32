@@ -15,6 +15,11 @@ MISO_SD = Pin(3)
 MOSI_SD = Pin(4)
 SCK_SD = Pin(2)
 CS_SD = Pin(5)
+# Memory: 31_116_288 bloques de 512 bytes
+BLOCK_SIZE = 512
+BUFFER_SIZE = 4096 # 8 bloques
+
+
 
 # Neopixel
 LED_PIN = Pin(1)
