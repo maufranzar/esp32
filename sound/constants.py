@@ -1,3 +1,4 @@
+# constants.py
 from machine import Pin
 
 # LCD_I2C: 2004A-v1

@@ -53,6 +53,6 @@ def main_loop():
 
 ### Main ###
 
-star = utime.ticks_ms()
+start = utime.ticks_ms()
 while utime.ticks_diff(utime.ticks_ms(), star) < 5_000:
     main_loop()
