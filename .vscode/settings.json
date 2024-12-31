@@ -45,7 +45,7 @@
     "errorLens.gutterIconsEnabled": true,
     "errorLens.onSaveTimeout": 1000,
     "errorLens.problemRangeDecorationEnabled": true,
-    "workbench.colorTheme": "Night Owl Light",
+    "workbench.colorTheme": "Night Owl (No Italics)",
     "idf.espIdfPath": "/home/maufranzar/esp/esp-idf",
     "idf.pythonBinPath": "/home/maufranzar/.espressif/python_env/idf5.3_py3.11_env/bin/python",
     "idf.toolsPath": "/home/maufranzar/.espressif",
